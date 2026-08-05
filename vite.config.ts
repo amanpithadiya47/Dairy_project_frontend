@@ -10,4 +10,13 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss()
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://attendance-system-backend-seven.vercel.app',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
 })
