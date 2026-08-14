@@ -6,9 +6,20 @@ function App() {
 
   const [task, setTask] = useState('');
 
+  const [error, setError] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState('');
+
   const addTask = () => {
+    if (task == '') {
+      setError(true);
+      setErrorMessage("Please Enter the Task")
+      return
+    }
     setList([...list, task]);
     setTask('');
+    setError(false);
+    setErrorMessage("")
   }
 
   return (
@@ -91,57 +102,58 @@ function App() {
         </div>
       </nav>
 
-
       <div className="px-4 md:px-8 my-6">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div>
-            <label htmlFor="full-name-small" className="mb-2 text-slate-900 dark:text-slate-50 font-medium text-sm inline-block ">Enter your task</label>
-            <input type="text" id="full-name-small" placeholder="John Smith" value={task} onChange={(e) => setTask(e.target.value)}
-              className="px-2.5 py-2 text-sm text-slate-900 dark:text-slate-50 rounded-md bg-white dark:bg-neutral-800 w-full outline-1 -outline-offset-1 outline-slate-300 dark:outline-neutral-700 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+        <div className="max-w-7xl  mx-auto">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div>
+              <label htmlFor="full-name-small" className="mb-2 text-slate-900 dark:text-slate-50 font-medium text-sm inline-block ">Enter your task</label>
+              <input type="text" id="full-name-small" placeholder="John Smith" value={task} onChange={(e) => setTask(e.target.value)}
+                className="px-2.5 py-2 text-sm text-slate-900 dark:text-slate-50 rounded-md bg-white dark:bg-neutral-800 w-full outline-1 -outline-offset-1 outline-slate-300 dark:outline-neutral-700 focus:outline-2 focus:-outline-offset-2 focus:outline-blue-600" />
+              {error && <p className="text-red-500">{errorMessage}</p>}
+            </div>
+            <button type="button" onClick={() => { addTask() }}
+              className="px-3.5  text-white text-sm font-semibold cursor-pointer bg-blue-600 hover:bg-blue-700 border border-blue-600 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
+              Add Task</button>
           </div>
-          <button type="button" onClick={() => { addTask() }}
-            className="px-3.5  text-white text-sm font-semibold cursor-pointer bg-blue-600 hover:bg-blue-700 border border-blue-600 rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-            Add Task</button>
         </div>
+      </div>
+      <div className="px-4 md:px-8 my-6">
+        <div className="max-w-7xl mx-auto border border-slate-200 dark:border-neutral-700 rounded-md overflow-x-auto">
+          <table className="w-full">
+            <thead
+              className="text-slate-900 dark:text-slate-50 text-left text-sm font-semibold border-b border-slate-300 dark:border-neutral-600 whitespace-nowrap">
+              <tr className="bg-slate-50 dark:bg-neutral-800">
+                <th scope="col" className="px-4 py-3.5">Sr No.</th>
+                <th scope="col" className="px-4 py-3.5">Task</th>
+                <th scope="col" className="px-4 py-3.5">Actions</th>
+              </tr>
+            </thead>
 
-        <div className="px-4 md:px-8 my-6">
-          <div className="max-w-7xl mx-auto border border-slate-200 dark:border-neutral-700 rounded-md overflow-x-auto">
-            <table className="w-full">
-              <thead
-                className="text-slate-900 dark:text-slate-50 text-left text-sm font-semibold border-b border-slate-300 dark:border-neutral-600 whitespace-nowrap">
-                <tr className="bg-slate-50 dark:bg-neutral-800">
-                  <th scope="col" className="px-4 py-3.5">Sr No.</th>
-                  <th scope="col" className="px-4 py-3.5">Task</th>
-                  <th scope="col" className="px-4 py-3.5">Actions</th>
+            <tbody className="text-sm divide-y divide-slate-200 dark:divide-neutral-700">
+              {list.map((item, index) => (
+                <tr className="hover:bg-slate-50 dark:hover:bg-neutral-800">
+                  <td className="px-4 py-4 font-medium text-slate-900 dark:text-slate-50 whitespace-nowrap">
+                    {index + 1}
+                  </td>
+                  <td className="px-4 py-4 text-slate-500 dark:text-slate-400">
+                    {item}
+                  </td>
+                  <td className="px-4 py-4 flex gap-3">
+                    <button type="button"
+                      className="text-sm text-blue-700 dark:text-blue-500 cursor-pointer hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+                      aria-label="Edit John Doe">
+                      Edit
+                    </button>
+                    <button type="button"
+                      className="text-sm text-red-700 dark:text-red-500 cursor-pointer hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded"
+                      aria-label="Delete John Doe">
+                      Delete
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-
-              <tbody className="text-sm divide-y divide-slate-200 dark:divide-neutral-700">
-                {list.map((item, index) => (
-                  <tr className="hover:bg-slate-50 dark:hover:bg-neutral-800">
-                    <td className="px-4 py-4 font-medium text-slate-900 dark:text-slate-50 whitespace-nowrap">
-                      {index + 1}
-                    </td>
-                    <td className="px-4 py-4 text-slate-500 dark:text-slate-400">
-                      {item}
-                    </td>
-                    <td className="px-4 py-4 flex gap-3">
-                      <button type="button"
-                        className="text-sm text-blue-700 dark:text-blue-500 cursor-pointer hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
-                        aria-label="Edit John Doe">
-                        Edit
-                      </button>
-                      <button type="button"
-                        className="text-sm text-red-700 dark:text-red-500 cursor-pointer hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 rounded"
-                        aria-label="Delete John Doe">
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </>
